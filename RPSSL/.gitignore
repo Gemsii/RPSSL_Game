@@ -1,0 +1,55 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userprefs
+*.sln.ide
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Ll]og/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+
+# Specs
+/specs
+
+# NuGet Packages
+*.nupkg
+**/packages/*
+!**/packages/build/*
+!**/packages/build/None/*
+**/packages/*/build/*.targets
+**/packages/*/build/*.props
+
+# User-specific files
+*.sln.docstates
+
+# Windows Installer files
+*.msi
+*.msm
+
+# Others
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.jfm.xml
+*.pdb
+*.mdb
+*.cache
+*.ilk
+*.log
+*.tlog
+
+# Azure Web App publishing
+publish/
