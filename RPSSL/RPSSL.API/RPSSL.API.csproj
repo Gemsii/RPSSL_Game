@@ -19,9 +19,6 @@
     <Folder Include="Features\Games\" />
     <Folder Include="Features\Choices\" />
     <Folder Include="Features\Players\" />
-    <Folder Include="Infrastructure\External\" />
-    <Folder Include="Infrastructure\Repositories\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

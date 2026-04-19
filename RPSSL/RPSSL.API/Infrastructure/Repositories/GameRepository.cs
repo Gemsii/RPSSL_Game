@@ -1,0 +1,37 @@
+using Microsoft.EntityFrameworkCore;
+using RPSSL.API.Domain.Interfaces;
+using RPSSL.API.Infrastructure.Mappers;
+using RPSSL.API.Infrastructure.Persistence.Configuration;
+using DomainEntities = RPSSL.API.Domain.Entities;
+
+namespace RPSSL.API.Infrastructure.Repositories
+{
+    public class GameRepository : IGameRepository
+    {
+        private readonly InMemoryDbContext _context;
+
+        public GameRepository(InMemoryDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<DomainEntities.Game> CreateAsync(DomainEntities.Game game)
+        {
+            var persistence = GameMapper.ToPersistence(game);
+            _context.Games.Add(persistence);
+            await _context.SaveChangesAsync();
+            return game;
+        }
+
+        public async Task<IEnumerable<DomainEntities.Game>> GetByPlayerIdAsync(Guid playerId)
+        {
+            var games = await _context.Games
+                .Include(g => g.Player)
+                .Where(g => g.PlayerId == playerId)
+                .OrderByDescending(g => g.CreatedAt)
+                .ToListAsync();
+
+            return games.Select(GameMapper.ToDomain);
+        }
+    }
+}
