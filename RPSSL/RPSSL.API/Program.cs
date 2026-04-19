@@ -1,6 +1,9 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using RPSSL.API.Domain.Interfaces;
 using RPSSL.API.Extensions;
+using RPSSL.API.Features.Choices.GetChoices;
+using RPSSL.API.Features.Players.Create;
 using RPSSL.API.Infrastructure.External;
 using RPSSL.API.Infrastructure.External.Options;
 using RPSSL.API.Infrastructure.Persistence.Configuration;
@@ -26,7 +29,10 @@ builder.Services.AddScoped<IChoiceService, ChoiceService>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 
-builder.Services.AddControllers();
+// Features
+builder.Services.AddScoped<CreatePlayerHandler>();
+builder.Services.AddScoped<IValidator<CreatePlayerCommand>, CreatePlayerCommandValidator>();
+builder.Services.AddScoped<GetChoicesHandler>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
