@@ -29,7 +29,8 @@ namespace RPSSL.API.Infrastructure.Mappers
                 persistence.Id,
                 player,
                 (Choice)persistence.PlayerChoice,
-                (Choice)persistence.ComputerChoice
+                (Choice)persistence.ComputerChoice,
+                persistence.CreatedAt
             );
         }
     }

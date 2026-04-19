@@ -1,6 +1,6 @@
 using RPSSL.API.Domain.Entities;
-using RPSSL.API.Domain.Enums;
 using RPSSL.API.Domain.Interfaces;
+using RPSSL.API.Domain.ValueObjects;
 using RPSSL.API.Infrastructure.Persistence.Configuration;
 
 namespace RPSSL.API.Features.Games.Play
@@ -10,17 +10,20 @@ namespace RPSSL.API.Features.Games.Play
         private readonly IGameRepository _gameRepository;
         private readonly IPlayerRepository _playerRepository;
         private readonly IRandomNumberService _randomNumberService;
+        private readonly IChoiceService _choiceService;
         private readonly ILogger<PlayGameHandler> _logger;
 
         public PlayGameHandler(
             IGameRepository gameRepository,
             IPlayerRepository playerRepository,
             IRandomNumberService randomNumberService,
+            IChoiceService choiceService,
             ILogger<PlayGameHandler> logger)
         {
             _gameRepository = gameRepository;
             _playerRepository = playerRepository;
             _randomNumberService = randomNumberService;
+            _choiceService = choiceService;
             _logger = logger;
         }
 
@@ -50,9 +53,8 @@ namespace RPSSL.API.Features.Games.Play
                 randomNumber = Random.Shared.Next(1, 101);
             }
 
-            var computerChoiceId = ((randomNumber - 1) % 5) + 1;
-            var playerChoice = (Choice)request.Choice;
-            var computerChoice = (Choice)computerChoiceId;
+            var playerChoice = _choiceService.GetByRandomNumber(PositiveNumber.Create(request.Choice));
+            var computerChoice = _choiceService.GetByRandomNumber(PositiveNumber.Create(randomNumber));
 
             var game = Game.Create(Guid.NewGuid(), player, playerChoice, computerChoice);
             await _gameRepository.CreateAsync(game);

@@ -20,17 +20,17 @@ namespace RPSSL.API.Domain.Entities
         public DateTime CreatedAt { get; private set; }
         public Player Player { get; private set; }
 
-        private Game(Guid id, Player player, Choice playerChoice, Choice computerChoice) : base(id)
+        private Game(Guid id, Player player, Choice playerChoice, Choice computerChoice, DateTime? createdAt = null) : base(id)
         {
             Player = player;
             PlayerChoice = playerChoice;
             ComputerChoice = computerChoice;
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = createdAt ?? DateTime.UtcNow;
         }
 
-        public static Game Create(Guid id, Player player, Choice playerChoice, Choice computerChoice)
+        public static Game Create(Guid id, Player player, Choice playerChoice, Choice computerChoice, DateTime? createdAt = null)
         {
-            var game = new Game(id, player, playerChoice, computerChoice);
+            var game = new Game(id, player, playerChoice, computerChoice, createdAt ?? DateTime.UtcNow);
             game.Play();
             return game;
         }

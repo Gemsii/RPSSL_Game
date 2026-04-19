@@ -1,5 +1,5 @@
-using RPSSL.API.Domain.Enums;
 using RPSSL.API.Domain.Interfaces;
+using RPSSL.API.Domain.ValueObjects;
 using RPSSL.API.Features.Choices.GetChoices;
 
 namespace RPSSL.API.Features.Choices.GetRandomChoice
@@ -7,11 +7,13 @@ namespace RPSSL.API.Features.Choices.GetRandomChoice
     public class GetRandomChoiceHandler
     {
         private readonly IRandomNumberService _randomNumberService;
+        private readonly IChoiceService _choiceService;
         private readonly ILogger<GetRandomChoiceHandler> _logger;
 
-        public GetRandomChoiceHandler(IRandomNumberService randomNumberService, ILogger<GetRandomChoiceHandler> logger)
+        public GetRandomChoiceHandler(IRandomNumberService randomNumberService, IChoiceService choiceService, ILogger<GetRandomChoiceHandler> logger)
         {
             _randomNumberService = randomNumberService;
+            _choiceService = choiceService;
             _logger = logger;
         }
 
@@ -30,12 +32,11 @@ namespace RPSSL.API.Features.Choices.GetRandomChoice
                 randomNumber = Random.Shared.Next(1, 101);
             }
 
-            var choiceId = ((randomNumber - 1) % 5) + 1;
-            var choice = (Choice)choiceId;
+            var choice = _choiceService.GetByRandomNumber(PositiveNumber.Create(randomNumber));
 
             return new ChoiceResponse
             {
-                Id = choiceId,
+                Id = (int)choice,
                 Name = choice.ToString().ToLower()
             };
         }
