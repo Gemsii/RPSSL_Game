@@ -30,7 +30,9 @@ namespace RPSSL.API.Domain.Entities
 
         public static Game Create(Guid id, Player player, Choice playerChoice, Choice computerChoice)
         {
-            return new Game(id, player, playerChoice, computerChoice);
+            var game = new Game(id, player, playerChoice, computerChoice);
+            game.Play();
+            return game;
         }
 
         private void Play()

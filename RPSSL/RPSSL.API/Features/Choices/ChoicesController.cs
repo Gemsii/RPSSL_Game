@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RPSSL.API.Features.Choices.GetChoices;
+using RPSSL.API.Features.Choices.GetRandomChoice;
 
 namespace RPSSL.API.Features.Choices
 {
@@ -8,10 +9,12 @@ namespace RPSSL.API.Features.Choices
     public class ChoicesController : ControllerBase
     {
         private readonly GetChoicesHandler _handler;
+        private readonly GetRandomChoiceHandler _randomChoiceHandler;
 
-        public ChoicesController(GetChoicesHandler handler)
+        public ChoicesController(GetChoicesHandler handler, GetRandomChoiceHandler randomChoiceHandler)
         {
             _handler = handler;
+            _randomChoiceHandler = randomChoiceHandler;
         }
 
         [HttpGet]
@@ -20,5 +23,13 @@ namespace RPSSL.API.Features.Choices
             var result = await _handler.Handle(new GetChoicesQuery(), ct);
             return Ok(result);
         }
+
+        [HttpGet("random")]
+        public async Task<IActionResult> GetRandom(CancellationToken ct)
+        {
+            var result = await _randomChoiceHandler.Handle(new GetRandomChoiceQuery(), ct);
+            return Ok(result);
+        }
     }
 }
+
