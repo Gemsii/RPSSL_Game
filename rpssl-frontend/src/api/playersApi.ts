@@ -1,13 +1,6 @@
+import { CreatePlayerRequest, CreatePlayerResponse } from '../models/Player';
+
 const BASE_URL = process.env.REACT_APP_API_URL;
-
-export interface CreatePlayerRequest {
-  name: string;
-}
-
-export interface CreatePlayerResponse {
-  id: string;
-  name: string;
-}
 
 export async function createPlayer(request: CreatePlayerRequest): Promise<CreatePlayerResponse> {
   const response = await fetch(`${BASE_URL}/players`, {

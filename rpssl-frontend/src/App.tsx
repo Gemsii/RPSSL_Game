@@ -1,14 +1,15 @@
 import { RouterProvider, useRouter } from './router/RouterContext';
-import { PlayerProvider } from './context/PlayerContext';
+import { PlayerProvider, usePlayer } from './context/PlayerContext';
 import LoginPage from './pages/LoginPage';
 import GamePage from './pages/GamePage';
 
 function AppRoutes() {
   const { currentRoute } = useRouter();
+  const { player } = usePlayer();
 
   switch (currentRoute) {
     case '/game':
-      return <GamePage />;
+      return player ? <GamePage /> : <LoginPage />;
     case '/':
     default:
       return <LoginPage />;

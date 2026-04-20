@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { SubmitEvent } from 'react';
 import { useRouter } from '../router/RouterContext';
 import { usePlayer } from '../context/PlayerContext';
 import { createPlayer } from '../api/playersApi';
@@ -19,7 +20,7 @@ export default function LoginPage() {
     navigate('/game');
   }
 
-  async function handleRegister(e: any) {
+  async function handleRegister(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setError('');
     setLoading(true);
