@@ -3,6 +3,7 @@ import type { SubmitEvent } from 'react';
 import { useRouter } from '../router/RouterContext';
 import { usePlayer } from '../context/PlayerContext';
 import { createPlayer } from '../api/playersApi';
+import './LoginPage.css';
 
 type Mode = 'select' | 'register';
 
@@ -37,34 +38,53 @@ export default function LoginPage() {
 
   if (mode === 'register') {
     return (
-      <div>
-        <h1>RPSSL Game</h1>
-        <form onSubmit={handleRegister}>
-          <input
-            type="text"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            disabled={loading}
-            required
-          />
-          <button type="submit" disabled={loading}>
-            {loading ? 'Creating...' : 'Create Player and Play'}
-          </button>
-          <button type="button" onClick={() => { setMode('select'); setError(''); }}>
-            Back
-          </button>
-        </form>
-        {error && <p>{error}</p>}
+      <div className="login-page">
+        <div className="login-card">
+          <span className="login-card__icon">🎮</span>
+          <h1 className="login-card__title">RPSSL Game</h1>
+          <p className="login-card__subtitle">Enter your name to track your score</p>
+          <form className="register-form" onSubmit={handleRegister}>
+            <input
+              className="input"
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              disabled={loading}
+              required
+            />
+            <button type="submit" className="btn btn--primary btn--full" disabled={loading}>
+              {loading ? 'Creating...' : 'Create Player and Play'}
+            </button>
+            <button
+              type="button"
+              className="btn btn--ghost btn--full"
+              onClick={() => { setMode('select'); setError(''); }}
+            >
+              Back
+            </button>
+          </form>
+          {error && <p className="error-text">{error}</p>}
+        </div>
       </div>
     );
   }
 
   return (
-    <div>
-      <h1>RPSSL Game</h1>
-      <button onClick={handleAnonymous}>Play as Anonymous</button>
-      <button onClick={() => setMode('register')}>Create Player</button>
+    <div className="login-page">
+      <div className="login-card">
+        <span className="login-card__icon">🎮</span>
+        <h1 className="login-card__title">RPSSL Game</h1>
+        <p className="login-card__subtitle">Rock · Paper · Scissors · Spock · Lizard</p>
+        <div className="login-card__actions">
+          <button className="btn btn--primary btn--full" onClick={handleAnonymous}>
+            Play as Anonymous
+          </button>
+          <button className="btn btn--secondary btn--full" onClick={() => setMode('register')}>
+            Create Player
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

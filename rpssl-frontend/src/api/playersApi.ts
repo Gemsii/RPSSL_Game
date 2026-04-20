@@ -10,8 +10,14 @@ export async function createPlayer(request: CreatePlayerRequest): Promise<Create
   });
 
   if (!response.ok) {
-    const errors: string[] = await response.json().catch(() => ['Error creating player.']);
-    throw new Error(errors[0] ?? 'Error creating player.');
+    const body = await response.json().catch(() => null);
+    // 409 / domain errors → { error: "..." }
+    // 400 validation errors → ["...", "..."]
+    const message =
+      (body && typeof body.error === 'string' && body.error) ||
+      (Array.isArray(body) && typeof body[0] === 'string' && body[0]) ||
+      'Error creating player.';
+    throw new Error(message);
   }
 
   return response.json();
