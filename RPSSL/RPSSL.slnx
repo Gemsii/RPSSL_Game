@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="RPSSL.API/RPSSL.API.csproj" />
+  <Project Path="RPSSL.Tests/RPSSL.Tests.csproj" />
 </Solution>
