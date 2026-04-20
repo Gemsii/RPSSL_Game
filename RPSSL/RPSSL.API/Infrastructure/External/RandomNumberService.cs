@@ -1,9 +1,8 @@
 using Microsoft.Extensions.Options;
+using RPSSL.API.Domain.Exceptions;
 using RPSSL.API.Domain.Interfaces;
-using RPSSL.API.Infrastructure.External.Exceptions;
 using RPSSL.API.Infrastructure.External.Models;
 using RPSSL.API.Infrastructure.External.Options;
-using System.Net.Http.Json;
 
 namespace RPSSL.API.Infrastructure.External
 {
@@ -11,11 +10,13 @@ namespace RPSSL.API.Infrastructure.External
     {
         private readonly HttpClient _httpClient;
         private readonly int _maxRetries;
+        private readonly ILogger<RandomNumberService> _logger;
 
-        public RandomNumberService(HttpClient httpClient, IOptions<CodeChallengeApiOptions> options)
+        public RandomNumberService(HttpClient httpClient, IOptions<CodeChallengeApiOptions> options, ILogger<RandomNumberService> logger)
         {
             _httpClient = httpClient;
             _maxRetries = options.Value.RetryCount;
+            _logger = logger;
         }
 
         public async Task<int> GetRandomNumberAsync()
@@ -27,8 +28,10 @@ namespace RPSSL.API.Infrastructure.External
 
                 var result = await response.Content.ReadFromJsonAsync<RandomNumberResponse>();
 
-                return result?.RandomNumber
-                    ?? throw new InvalidOperationException("Failed to retrieve random number from external service.");
+                if (result is null)
+                    throw new ExternalServiceUnavailableException();
+
+                return result.RandomNumber;
             });
         }
 
@@ -40,9 +43,16 @@ namespace RPSSL.API.Infrastructure.External
                 {
                     return await action();
                 }
-                catch when (attempt < _maxRetries)
+                catch (Exception ex) when (attempt < _maxRetries)
                 {
+                    _logger.LogWarning(ex, "Random number service failed on attempt {Attempt}/{MaxRetries}. Retrying in {Delay}s.",
+                        attempt, _maxRetries, Math.Pow(2, attempt));
                     await Task.Delay(TimeSpan.FromSeconds(Math.Pow(2, attempt)));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Random number service failed on final attempt {Attempt}/{MaxRetries}.",
+                        attempt, _maxRetries);
                 }
             }
 

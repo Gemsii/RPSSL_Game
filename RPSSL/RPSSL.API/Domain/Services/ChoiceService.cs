@@ -2,7 +2,7 @@ using RPSSL.API.Domain.Enums;
 using RPSSL.API.Domain.Interfaces;
 using RPSSL.API.Domain.ValueObjects;
 
-namespace RPSSL.API.Services
+namespace RPSSL.API.Domain.Services
 {
     public class ChoiceService : IChoiceService
     {
@@ -18,5 +18,3 @@ namespace RPSSL.API.Services
         }
     }
 }
-
-

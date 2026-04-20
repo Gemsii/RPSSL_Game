@@ -1,7 +1,7 @@
+using RPSSL.API.Domain.Exceptions;
 using RPSSL.API.Domain.Interfaces;
 using RPSSL.API.Domain.ValueObjects;
 using RPSSL.API.Features.Choices.GetChoices;
-using RPSSL.API.Infrastructure.External.Exceptions;
 
 namespace RPSSL.API.Features.Choices.GetRandomChoice
 {

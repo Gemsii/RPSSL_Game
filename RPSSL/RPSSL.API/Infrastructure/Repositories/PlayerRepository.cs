@@ -17,7 +17,7 @@ namespace RPSSL.API.Infrastructure.Repositories
 
         public async Task<DomainEntities.Player?> GetByIdAsync(Guid id)
         {
-            var player = await _context.Players.FirstOrDefaultAsync(p => p.Id == id);
+            var player = await _context.Players.FindAsync(id);
             return player is null ? null : PlayerMapper.ToDomain(player);
         }
 
@@ -33,18 +33,6 @@ namespace RPSSL.API.Infrastructure.Repositories
             _context.Players.Add(persistence);
             await _context.SaveChangesAsync();
             return player;
-        }
-
-        public async Task<IEnumerable<DomainEntities.Player>> GetScoreboardByPageAsync(int page, int pageSize)
-        {
-            var players = await _context.Players
-                .Include(p => p.Games)
-                .OrderByDescending(p => p.Games.Count(g => g.Result == (int)RPSSL.API.Domain.Enums.GameResult.Win))
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            return players.Select(PlayerMapper.ToDomain);
         }
     }
 }

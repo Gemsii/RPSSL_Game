@@ -14,9 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Exceptions\" />
-    <Folder Include="Common\Models\" />
-    <Folder Include="Common\Middleware\" />
     <Folder Include="Features\Choices\" />
     <Folder Include="Features\Players\" />
   </ItemGroup>

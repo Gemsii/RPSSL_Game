@@ -12,9 +12,6 @@ namespace RPSSL.API.Domain.Interfaces
 
         /// <summary>Persists a new player to the store.</summary>
         Task<Player> CreateAsync(Player player);
-
-        /// <summary>Returns a paged list of players ordered by score.</summary>
-        Task<IEnumerable<Player>> GetScoreboardByPageAsync(int page, int pageSize);
     }
 }
 

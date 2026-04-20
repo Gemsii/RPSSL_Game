@@ -11,7 +11,7 @@ using RPSSL.API.Infrastructure.External;
 using RPSSL.API.Infrastructure.External.Options;
 using RPSSL.API.Infrastructure.Persistence.Configuration;
 using RPSSL.API.Infrastructure.Repositories;
-using RPSSL.API.Services;
+using RPSSL.API.Domain.Services;
 
 namespace RPSSL.API.Extensions
 {
@@ -57,11 +57,12 @@ namespace RPSSL.API.Extensions
             services.AddScoped<CreatePlayerHandler>();
             services.AddScoped<IValidator<CreatePlayerCommand>, CreatePlayerCommandValidator>();
 
+            services.AddScoped<PlayGameHandler>();
+            services.AddScoped<IValidator<PlayGameCommand>, PlayGameCommandValidator>();
+
             services.AddScoped<GetChoicesHandler>();
             services.AddScoped<GetRandomChoiceHandler>();
 
-            services.AddScoped<PlayGameHandler>();
-            services.AddScoped<IValidator<PlayGameCommand>, PlayGameCommandValidator>();
             services.AddScoped<GetScoreboardHandler>();
             services.AddScoped<ResetScoreboardHandler>();
 

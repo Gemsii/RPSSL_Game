@@ -1,10 +1,8 @@
+using RPSSL.API.Domain.Constants;
 using RPSSL.API.Domain.Entities;
-using RPSSL.API.Domain.Enums;
 using RPSSL.API.Domain.Exceptions;
 using RPSSL.API.Domain.Interfaces;
 using RPSSL.API.Domain.ValueObjects;
-using RPSSL.API.Infrastructure.External.Exceptions;
-using RPSSL.API.Infrastructure.Persistence.Configuration;
 
 namespace RPSSL.API.Features.Games.Play
 {
@@ -41,11 +39,11 @@ namespace RPSSL.API.Features.Games.Play
 
             var player = request.PlayerId.HasValue
                 ? await _playerRepository.GetByIdAsync(request.PlayerId.Value)
-                : await _playerRepository.GetByIdAsync(SeedData.AnonymousPlayerId);
+                : await _playerRepository.GetByIdAsync(WellKnownPlayers.AnonymousPlayerId);
 
             if (player is null)
                 throw new PlayerNotFoundException(
-                    request.PlayerId ?? SeedData.AnonymousPlayerId);
+                    request.PlayerId ?? WellKnownPlayers.AnonymousPlayerId);
 
             int randomNumber;
             try

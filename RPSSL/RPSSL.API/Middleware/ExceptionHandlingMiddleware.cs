@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using RPSSL.API.Domain.Exceptions;
-using RPSSL.API.Infrastructure.External.Exceptions;
 
 namespace RPSSL.API.Middleware
 {

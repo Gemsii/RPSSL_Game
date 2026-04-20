@@ -1,4 +1,4 @@
-namespace RPSSL.API.Infrastructure.External.Exceptions
+namespace RPSSL.API.Domain.Exceptions
 {
     /// <summary>Thrown when the external random number service is unavailable after all retry attempts.</summary>
     public class ExternalServiceUnavailableException : Exception
