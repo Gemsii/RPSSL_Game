@@ -1,15 +1,17 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using RPSSL.API.Domain.Exceptions;
+using RPSSL.API.Infrastructure.External.Exceptions;
 
 namespace RPSSL.API.Middleware
 {
     /// <summary>
     /// Catches unhandled exceptions and maps them to appropriate HTTP responses.
     /// <list type="bullet">
-    ///   <item><see cref="PlayerNotFoundException"/> ? 404 Not Found</item>
-    ///   <item><see cref="PlayerAlreadyExistsException"/> ? 409 Conflict</item>
-    ///   <item><see cref="InvalidChoiceException"/> ? 400 Bad Request</item>
-    ///   <item>Everything else ? 500 Internal Server Error</item>
+    ///   <item><see cref="PlayerNotFoundException"/> → 404 Not Found</item>
+    ///   <item><see cref="PlayerAlreadyExistsException"/> → 409 Conflict</item>
+    ///   <item><see cref="DomainException"/> → 400 Bad Request</item>
+    ///   <item><see cref="ExternalServiceUnavailableException"/> → 502 Bad Gateway</item>
+    ///   <item>Everything else → 500 Internal Server Error</item>
     /// </list>
     /// </summary>
     public class ExceptionHandlingMiddleware
@@ -42,9 +44,14 @@ namespace RPSSL.API.Middleware
             {
                 await WriteResponse(context, StatusCodes.Status409Conflict, ex.Message);
             }
-            catch (InvalidChoiceException ex)
+            catch (DomainException ex)
             {
                 await WriteResponse(context, StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (ExternalServiceUnavailableException ex)
+            {
+                _logger.LogError(ex, "External service unavailable.");
+                await WriteResponse(context, StatusCodes.Status502BadGateway, ex.Message);
             }
             catch (Exception ex)
             {
