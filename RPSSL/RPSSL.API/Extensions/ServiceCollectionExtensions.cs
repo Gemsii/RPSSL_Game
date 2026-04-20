@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using RPSSL.API.Domain.Interfaces;
 using RPSSL.API.Features.Choices.GetChoices;
 using RPSSL.API.Features.Choices.GetRandomChoice;
+using RPSSL.API.Features.Games.GetScoreboard;
 using RPSSL.API.Features.Games.Play;
+using RPSSL.API.Features.Games.ResetScoreboard;
 using RPSSL.API.Features.Players.Create;
 using RPSSL.API.Infrastructure.External;
 using RPSSL.API.Infrastructure.External.Options;
@@ -56,6 +58,8 @@ namespace RPSSL.API.Extensions
 
             services.AddScoped<PlayGameHandler>();
             services.AddScoped<IValidator<PlayGameCommand>, PlayGameCommandValidator>();
+            services.AddScoped<GetScoreboardHandler>();
+            services.AddScoped<ResetScoreboardHandler>();
 
             return services;
         }

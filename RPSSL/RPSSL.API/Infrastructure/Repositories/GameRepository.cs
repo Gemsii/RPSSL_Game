@@ -33,5 +33,12 @@ namespace RPSSL.API.Infrastructure.Repositories
 
             return games.Select(GameMapper.ToDomain);
         }
+
+        public async Task DeleteByPlayerIdAsync(Guid playerId, CancellationToken ct)
+        {
+            var games = _context.Games.Where(g => g.PlayerId == playerId);
+            _context.Games.RemoveRange(games);
+            await _context.SaveChangesAsync(ct);
+        }
     }
 }
