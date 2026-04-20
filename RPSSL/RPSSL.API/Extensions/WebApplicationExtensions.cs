@@ -1,4 +1,5 @@
 using RPSSL.API.Infrastructure.Persistence.Configuration;
+using RPSSL.API.Middleware;
 
 namespace RPSSL.API.Extensions
 {
@@ -6,6 +7,8 @@ namespace RPSSL.API.Extensions
     {
         public static void Configure(this WebApplication app)
         {
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

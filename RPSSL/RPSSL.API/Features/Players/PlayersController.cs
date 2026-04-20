@@ -25,9 +25,6 @@ namespace RPSSL.API.Features.Players
                 return BadRequest(validation.Errors.Select(e => e.ErrorMessage));
 
             var result = await _handler.Handle(command, ct);
-            if (result is null)
-                return BadRequest("Player already exists.");
-
             return Ok(result);
         }
     }

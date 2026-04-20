@@ -1,6 +1,7 @@
 using RPSSL.API.Domain.Interfaces;
 using RPSSL.API.Domain.ValueObjects;
 using RPSSL.API.Features.Choices.GetChoices;
+using RPSSL.API.Infrastructure.External.Exceptions;
 
 namespace RPSSL.API.Features.Choices.GetRandomChoice
 {
@@ -30,7 +31,7 @@ namespace RPSSL.API.Features.Choices.GetRandomChoice
             {
                 randomNumber = await _randomNumberService.GetRandomNumberAsync();
             }
-            catch (Exception ex)
+            catch (ExternalServiceUnavailableException ex)
             {
                 _logger.LogWarning(ex, "External random number service failed. Falling back to Random.Shared.");
                 randomNumber = Random.Shared.Next(1, 101);

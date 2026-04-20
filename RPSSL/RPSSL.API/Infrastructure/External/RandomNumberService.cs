@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using RPSSL.API.Domain.Interfaces;
+using RPSSL.API.Infrastructure.External.Exceptions;
 using RPSSL.API.Infrastructure.External.Models;
 using RPSSL.API.Infrastructure.External.Options;
 using System.Net.Http.Json;
@@ -45,7 +46,7 @@ namespace RPSSL.API.Infrastructure.External
                 }
             }
 
-            throw new InvalidOperationException("External random number service is unavailable after multiple retries.");
+            throw new ExternalServiceUnavailableException();
         }
     }
 }

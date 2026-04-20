@@ -1,4 +1,5 @@
 using RPSSL.API.Domain.Entities;
+using RPSSL.API.Domain.Exceptions;
 using RPSSL.API.Domain.Interfaces;
 using RPSSL.API.Domain.ValueObjects;
 
@@ -17,9 +18,9 @@ namespace RPSSL.API.Features.Players.Create
 
         /// <summary>
         /// Creates a new player if a player with the same name does not already exist.
-        /// Returns <c>null</c> if the player already exists.
+        /// Throws <see cref="PlayerAlreadyExistsException"/> if the name is taken.
         /// </summary>
-        public async Task<PlayerResponse?> Handle(CreatePlayerCommand request, CancellationToken ct)
+        public async Task<PlayerResponse> Handle(CreatePlayerCommand request, CancellationToken ct)
         {
             _logger.LogInformation("CreatePlayer started. Name: {Name}", request.Name);
 
@@ -27,10 +28,7 @@ namespace RPSSL.API.Features.Players.Create
 
             var existing = await _playerRepository.GetByNameAsync(playerName.Value);
             if (existing is not null)
-            {
-                _logger.LogWarning("Player with name '{Name}' already exists.", request.Name);
-                return null;
-            }
+                throw new PlayerAlreadyExistsException(request.Name);
 
             var player = Player.Create(Guid.NewGuid(), playerName);
             await _playerRepository.CreateAsync(player);

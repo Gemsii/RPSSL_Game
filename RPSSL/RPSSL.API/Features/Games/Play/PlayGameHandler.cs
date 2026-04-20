@@ -1,6 +1,9 @@
 using RPSSL.API.Domain.Entities;
+using RPSSL.API.Domain.Enums;
+using RPSSL.API.Domain.Exceptions;
 using RPSSL.API.Domain.Interfaces;
 using RPSSL.API.Domain.ValueObjects;
+using RPSSL.API.Infrastructure.External.Exceptions;
 using RPSSL.API.Infrastructure.Persistence.Configuration;
 
 namespace RPSSL.API.Features.Games.Play
@@ -41,17 +44,15 @@ namespace RPSSL.API.Features.Games.Play
                 : await _playerRepository.GetByIdAsync(SeedData.AnonymousPlayerId);
 
             if (player is null)
-                throw new InvalidOperationException(
-                    request.PlayerId.HasValue
-                        ? $"Player with id '{request.PlayerId}' was not found."
-                        : "Anonymous player not found.");
+                throw new PlayerNotFoundException(
+                    request.PlayerId ?? SeedData.AnonymousPlayerId);
 
             int randomNumber;
             try
             {
                 randomNumber = await _randomNumberService.GetRandomNumberAsync();
             }
-            catch (Exception ex)
+            catch (ExternalServiceUnavailableException ex)
             {
                 _logger.LogWarning(ex, "External random number service failed. Falling back to Random.Shared.");
                 randomNumber = Random.Shared.Next(1, 101);
