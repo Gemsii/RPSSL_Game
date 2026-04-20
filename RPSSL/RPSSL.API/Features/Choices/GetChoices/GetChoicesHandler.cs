@@ -11,6 +11,9 @@ namespace RPSSL.API.Features.Choices.GetChoices
             _logger = logger;
         }
 
+        /// <summary>
+        /// Returns all available game choices (Rock, Paper, Scissors, Lizard, Spock).
+        /// </summary>
         public Task<List<ChoiceResponse>> Handle(GetChoicesQuery query, CancellationToken ct)
         {
             _logger.LogInformation("GetChoices started.");

@@ -15,6 +15,10 @@ namespace RPSSL.API.Features.Players.Create
             _logger = logger;
         }
 
+        /// <summary>
+        /// Creates a new player if a player with the same name does not already exist.
+        /// Returns <c>null</c> if the player already exists.
+        /// </summary>
         public async Task<PlayerResponse?> Handle(CreatePlayerCommand request, CancellationToken ct)
         {
             _logger.LogInformation("CreatePlayer started. Name: {Name}", request.Name);

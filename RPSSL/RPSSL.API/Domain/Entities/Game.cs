@@ -28,13 +28,20 @@ namespace RPSSL.API.Domain.Entities
             CreatedAt = createdAt ?? DateTime.UtcNow;
         }
 
-        public static Game Create(Guid id, Player player, Choice playerChoice, Choice computerChoice, DateTime? createdAt = null)
+        /// <summary>
+        /// Creates a new game and immediately determines its result.
+        /// Optionally accepts a <paramref name="createdAt"/> timestamp for restoring persisted games.
+        /// </summary>
+        public static Game Create(Guid id, Player player, Choice playerChoice, Choice computerChoice, DateTime? createdAt = DateTime.UtcNow)
         {
-            var game = new Game(id, player, playerChoice, computerChoice, createdAt ?? DateTime.UtcNow);
+            var game = new Game(id, player, playerChoice, computerChoice, createdAt);
             game.Play();
             return game;
         }
 
+        /// <summary>
+        /// Determines the game result based on the player and computer choices.
+        /// </summary>
         private void Play()
         {
             if (PlayerChoice == ComputerChoice)

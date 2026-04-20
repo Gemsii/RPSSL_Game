@@ -27,6 +27,10 @@ namespace RPSSL.API.Features.Games.Play
             _logger = logger;
         }
 
+        /// <summary>
+        /// Resolves the player, generates a computer choice via the external random number service,
+        /// creates and persists the game, and returns the result.
+        /// </summary>
         public async Task<PlayGameResponse> Handle(PlayGameCommand request, CancellationToken ct)
         {
             _logger.LogInformation("PlayGame started. PlayerId: {PlayerId}, Choice: {Choice}",

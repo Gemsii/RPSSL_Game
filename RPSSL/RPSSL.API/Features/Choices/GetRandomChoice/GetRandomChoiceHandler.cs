@@ -17,6 +17,10 @@ namespace RPSSL.API.Features.Choices.GetRandomChoice
             _logger = logger;
         }
 
+        /// <summary>
+        /// Fetches a random number from the external service and maps it to a game choice.
+        /// Falls back to <see cref="Random.Shared"/> if the external service is unavailable.
+        /// </summary>
         public async Task<ChoiceResponse> Handle(GetRandomChoiceQuery query, CancellationToken ct)
         {
             _logger.LogInformation("GetRandomChoice started.");

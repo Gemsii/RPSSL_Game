@@ -39,9 +39,9 @@ namespace RPSSL.API.Features.Games
         }
 
         [HttpGet("scoreboard/{playerId:guid}")]
-        public async Task<IActionResult> GetScoreboard(Guid playerId, CancellationToken ct)
+        public async Task<IActionResult> GetScoreboard(Guid playerId, [FromQuery] int page = 1, CancellationToken ct = default)
         {
-            var result = await _getScoreboardHandler.Handle(new GetScoreboardQuery { PlayerId = playerId }, ct);
+            var result = await _getScoreboardHandler.Handle(new GetScoreboardQuery { PlayerId = playerId, Page = page }, ct);
             return Ok(result);
         }
 

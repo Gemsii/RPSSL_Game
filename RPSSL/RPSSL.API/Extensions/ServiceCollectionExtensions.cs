@@ -17,6 +17,7 @@ namespace RPSSL.API.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        /// <summary>Registers DbContext and repository implementations.</summary>
         public static IServiceCollection AddPersistence(this IServiceCollection services)
         {
             services.AddDbContext<InMemoryDbContext>(options =>
@@ -28,6 +29,7 @@ namespace RPSSL.API.Extensions
             return services;
         }
 
+        /// <summary>Registers the external random number API client and its options.</summary>
         public static IServiceCollection AddExternalServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<CodeChallengeApiOptions>(
@@ -41,6 +43,7 @@ namespace RPSSL.API.Extensions
             return services;
         }
 
+        /// <summary>Registers application-level domain services.</summary>
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IChoiceService, ChoiceService>();
@@ -48,6 +51,7 @@ namespace RPSSL.API.Extensions
             return services;
         }
 
+        /// <summary>Registers all feature handlers and validators.</summary>
         public static IServiceCollection AddFeatures(this IServiceCollection services)
         {
             services.AddScoped<CreatePlayerHandler>();
@@ -64,6 +68,7 @@ namespace RPSSL.API.Extensions
             return services;
         }
 
+        /// <summary>Registers the CORS policy that allows any origin, method and header.</summary>
         public static IServiceCollection AddCorsPolicy(this IServiceCollection services)
         {
             services.AddCors(options =>

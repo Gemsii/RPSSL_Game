@@ -23,12 +23,14 @@ namespace RPSSL.API.Infrastructure.Repositories
             return game;
         }
 
-        public async Task<IEnumerable<DomainEntities.Game>> GetByPlayerIdAsync(Guid playerId)
+        public async Task<IEnumerable<DomainEntities.Game>> GetByPlayerIdAsync(Guid playerId, int page, int pageSize)
         {
             var games = await _context.Games
                 .Include(g => g.Player)
                 .Where(g => g.PlayerId == playerId)
-                .OrderByDescending(g => g.CreatedAt)
+                .OrderBy(g => g.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
             return games.Select(GameMapper.ToDomain);

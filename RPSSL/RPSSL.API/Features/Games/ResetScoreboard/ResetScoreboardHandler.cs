@@ -13,6 +13,9 @@ namespace RPSSL.API.Features.Games.ResetScoreboard
             _logger = logger;
         }
 
+        /// <summary>
+        /// Removes all games belonging to the specified player.
+        /// </summary>
         public async Task Handle(ResetScoreboardCommand command, CancellationToken ct)
         {
             _logger.LogInformation("ResetScoreboard started. PlayerId: {PlayerId}", command.PlayerId);
