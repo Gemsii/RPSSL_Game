@@ -55,7 +55,7 @@ npm start
 Open `http://localhost:3000` in your browser.
 
 - **Play anonymously** — click _Play as Guest_ to jump straight into the game without registering.
-- **Register** — enter a username to create a persistent player account. Registered players get access to a personal scoreboard.
+- **Create a player** — enter a username to create a persistent player account. Registered players get access to a personal scoreboard.
 
 Once in the game room you can:
 
@@ -176,4 +176,4 @@ The five choices beat/lose to each other as follows:
 - **Lizard** poisons Spock, eats Paper
 - **Spock** smashes Scissors, vaporizes Rock
 
-Full rules: [The Big Bang Theory — RPSSL](https://bigbangtheory.fandom.com/wiki/Rock,_Paper,_Scissors,_Lizard,_Spock)
+Full rules: [The Big Bang Theory — RPSSL](https://www.samkass.com/theories/RPSSL.html)
