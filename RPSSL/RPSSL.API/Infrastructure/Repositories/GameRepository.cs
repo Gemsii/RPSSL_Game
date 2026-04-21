@@ -28,7 +28,7 @@ namespace RPSSL.API.Infrastructure.Repositories
             var games = await _context.Games
                 .Include(g => g.Player)
                 .Where(g => g.PlayerId == playerId)
-                .OrderBy(g => g.CreatedAt)
+                .OrderByDescending(g => g.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
