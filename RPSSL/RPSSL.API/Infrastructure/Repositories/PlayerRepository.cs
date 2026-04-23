@@ -8,9 +8,9 @@ namespace RPSSL.API.Infrastructure.Repositories
 {
     public class PlayerRepository : IPlayerRepository
     {
-        private readonly InMemoryDbContext _context;
+        private readonly RpsslDbContext _context;
 
-        public PlayerRepository(InMemoryDbContext context)
+        public PlayerRepository(RpsslDbContext context)
         {
             _context = context;
         }

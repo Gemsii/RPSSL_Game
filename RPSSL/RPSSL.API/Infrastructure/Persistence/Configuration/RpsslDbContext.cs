@@ -3,12 +3,12 @@ using RPSSL.API.Infrastructure.Persistence.Entities;
 
 namespace RPSSL.API.Infrastructure.Persistence.Configuration
 {
-    public class InMemoryDbContext : DbContext
+    public class RpsslDbContext : DbContext
     {
         public DbSet<Player> Players => Set<Player>();
         public DbSet<Game> Games => Set<Game>();
 
-        public InMemoryDbContext(DbContextOptions<InMemoryDbContext> options) : base(options)
+        public RpsslDbContext(DbContextOptions<RpsslDbContext> options) : base(options)
         {
         }
 
@@ -22,6 +22,9 @@ namespace RPSSL.API.Infrastructure.Persistence.Configuration
 
         public void Seed()
         {
+            // Apply pending EF Core migrations (creates or updates the database schema)
+            Database.Migrate();
+
             if (Players.Any())
                 return;
 

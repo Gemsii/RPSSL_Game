@@ -31,7 +31,7 @@ namespace RPSSL.API.Extensions
         private static void SeedDatabase(IHost app)
         {
             using var scope = app.Services.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<InMemoryDbContext>();
+            var context = scope.ServiceProvider.GetRequiredService<RpsslDbContext>();
             context.Seed();
         }
     }

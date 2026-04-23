@@ -3,7 +3,7 @@ using RPSSL.API.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddPersistence()
+    .AddPersistence(builder.Configuration)
     .AddExternalServices(builder.Configuration)
     .AddApplicationServices()
     .AddFeatures()

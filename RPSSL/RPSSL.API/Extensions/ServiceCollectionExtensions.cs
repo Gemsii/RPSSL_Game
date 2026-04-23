@@ -18,10 +18,9 @@ namespace RPSSL.API.Extensions
     public static class ServiceCollectionExtensions
     {
         /// <summary>Registers DbContext and repository implementations.</summary>
-        public static IServiceCollection AddPersistence(this IServiceCollection services)
+        public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<InMemoryDbContext>(options =>
-                options.UseInMemoryDatabase("RpSslDb"));
+            services.AddDbContext<RpsslDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<IPlayerRepository, PlayerRepository>();

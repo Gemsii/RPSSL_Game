@@ -8,9 +8,9 @@ namespace RPSSL.API.Infrastructure.Repositories
 {
     public class GameRepository : IGameRepository
     {
-        private readonly InMemoryDbContext _context;
+        private readonly RpsslDbContext _context;
 
-        public GameRepository(InMemoryDbContext context)
+        public GameRepository(RpsslDbContext context)
         {
             _context = context;
         }

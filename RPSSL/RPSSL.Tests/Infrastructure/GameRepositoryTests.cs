@@ -10,7 +10,7 @@ namespace RPSSL.Tests.Infrastructure
 {
     public class GameRepositoryTests : IDisposable
     {
-        private readonly InMemoryDbContext _context;
+        private readonly RpsslDbContext _context;
         private readonly GameRepository _sut;
 
         private static readonly Guid Player1Id = Guid.NewGuid();
@@ -18,11 +18,13 @@ namespace RPSSL.Tests.Infrastructure
 
         public GameRepositoryTests()
         {
-            var options = new DbContextOptionsBuilder<InMemoryDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString()) // unique DB per test class instance
+            var options = new DbContextOptionsBuilder<RpsslDbContext>()
+                .UseSqlServer("Server=.;Database=RpsslTestDb;Trusted_Connection=True;TrustServerCertificate=True")
                 .Options;
 
-            _context = new InMemoryDbContext(options);
+            _context = new RpsslDbContext(options);
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
             _sut = new GameRepository(_context);
 
             SeedPlayers();
