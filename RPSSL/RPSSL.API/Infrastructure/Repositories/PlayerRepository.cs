@@ -1,3 +1,4 @@
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using RPSSL.API.Domain.Interfaces;
 using RPSSL.API.Infrastructure.Mappers;
@@ -17,21 +18,84 @@ namespace RPSSL.API.Infrastructure.Repositories
 
         public async Task<DomainEntities.Player?> GetByIdAsync(Guid id)
         {
-            var player = await _context.Players.FindAsync(id);
-            return player is null ? null : PlayerMapper.ToDomain(player);
+            // Use ADO.NET to call stored procedure to avoid EF Core composition issues
+            var connString = _context.Database.GetDbConnection().ConnectionString;
+            await using var connection = new SqlConnection(connString);
+            await connection.OpenAsync();
+
+            await using var command = connection.CreateCommand();
+            command.CommandText = "dbo.GetPlayerById";
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+
+            var idParam = command.CreateParameter();
+            idParam.ParameterName = "@Id";
+            idParam.Value = id;
+            command.Parameters.Add(idParam);
+
+            await using var reader = await command.ExecuteReaderAsync();
+            if (!reader.Read())
+                return null;
+
+            var entity = new Infrastructure.Persistence.Entities.Player
+            {
+                Id = reader.GetFieldValue<Guid>(reader.GetOrdinal("Id")),
+                Name = reader.GetFieldValue<string>(reader.GetOrdinal("Name"))
+            };
+
+            return PlayerMapper.ToDomain(entity);
         }
 
         public async Task<DomainEntities.Player?> GetByNameAsync(string name)
         {
-            var player = await _context.Players.FirstOrDefaultAsync(p => p.Name == name);
-            return player is null ? null : PlayerMapper.ToDomain(player);
+            var connString = _context.Database.GetDbConnection().ConnectionString;
+            await using var connection = new SqlConnection(connString);
+            await connection.OpenAsync();
+
+            await using var command = connection.CreateCommand();
+            command.CommandText = "dbo.GetPlayerByName";
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+
+            var nameParam = command.CreateParameter();
+            nameParam.ParameterName = "@Name";
+            nameParam.Value = name;
+            command.Parameters.Add(nameParam);
+
+            await using var reader = await command.ExecuteReaderAsync();
+            if (!reader.Read())
+                return null;
+
+            var entity = new Infrastructure.Persistence.Entities.Player
+            {
+                Id = reader.GetFieldValue<Guid>(reader.GetOrdinal("Id")),
+                Name = reader.GetFieldValue<string>(reader.GetOrdinal("Name"))
+            };
+
+            return PlayerMapper.ToDomain(entity);
         }
 
         public async Task<DomainEntities.Player> CreateAsync(DomainEntities.Player player)
         {
             var persistence = PlayerMapper.ToPersistence(player);
-            _context.Players.Add(persistence);
-            await _context.SaveChangesAsync();
+            var connString = _context.Database.GetDbConnection().ConnectionString;
+            await using var connection = new SqlConnection(connString);
+            await connection.OpenAsync();
+
+            await using var command = connection.CreateCommand();
+            command.CommandText = "dbo.InsertPlayer";
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+
+            var idParam = command.CreateParameter();
+            idParam.ParameterName = "@Id";
+            idParam.Value = persistence.Id;
+            command.Parameters.Add(idParam);
+
+            var nameParam = command.CreateParameter();
+            nameParam.ParameterName = "@Name";
+            nameParam.Value = persistence.Name ?? (object)DBNull.Value;
+            command.Parameters.Add(nameParam);
+
+            await command.ExecuteNonQueryAsync();
+
             return player;
         }
     }
