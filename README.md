@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository contains a full-stack implementation of the Rock Paper Scissors Lizard Spock (RPSSL) game. The backend is built with **C# and .NET 8**, providing a clean RESTful API with a vertical-slice feature architecture, FluentValidation, and an in-memory database. The frontend is a **React + TypeScript** single-page application with no external UI libraries, featuring custom routing and a Material Design–inspired interface.
+This repository contains a full-stack implementation of the Rock Paper Scissors Lizard Spock (RPSSL) game. The backend is built with **C# and .NET 8**, providing a clean RESTful API with a vertical-slice feature architecture, FluentValidation, and a relational database via Entity Framework Core (SQL Server, code-first migrations). The frontend is a **React + TypeScript** single-page application with no external UI libraries, featuring custom routing and a Material Design–inspired interface.
 
 Players can compete against a computer opponent whose move is determined by a random number sourced from an external API (`codechallenge.boohma.com`). Registered players get access to a personal paginated scoreboard.
 
@@ -148,6 +148,8 @@ dotnet test
 
 Tests cover FluentValidation validators for `CreatePlayerCommand` and `PlayGameCommand`.
 
+Note: Tests use a transient relational test database (SQL Server) created/dropped during test runs. Ensure a test database connection string is configured in your test environment or use a test-container setup for reliable runs.
+
 ---
 
 ## Tech Stack
@@ -155,7 +157,7 @@ Tests cover FluentValidation validators for `CreatePlayerCommand` and `PlayGameC
 | Layer        | Technology                                                          |
 | ------------ | ------------------------------------------------------------------- |
 | Backend      | C#, .NET 8, ASP.NET Core Web API                                    |
-| Persistence  | Entity Framework Core (in-memory)                                   |
+| Persistence  | Entity Framework Core (SQL Server, code-first migrations)           |
 | Validation   | FluentValidation                                                    |
 | API Docs     | Swagger / Swashbuckle                                               |
 | External API | `codechallenge.boohma.com` (random number source for computer move) |
